@@ -1,0 +1,25 @@
+{
+  "name": "kpalan-events",
+  "version": "1.0.0",
+  "description": "Events management system",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nushon/Kpalan-Events.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nushon/Kpalan-Events/issues"
+  },
+  "homepage": "https://github.com/nushon/Kpalan-Events#readme",
+  "dependencies": {
+    "body-parser": "^1.19.1",
+    "express": "^4.17.1",
+    "sqlite3": "^5.0.2"
+  }
+}
