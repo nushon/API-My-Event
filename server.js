@@ -60,7 +60,7 @@ app.post('/participant', function(req, res){
       res.send("Unsuccessful");
     }else{
       console.log("Your table was inserted successfully");
-      res.send("Your table was inserted successfully", query);
+      res.send("Your table was inserted successfully");
     }  
   });
 
