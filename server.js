@@ -218,7 +218,4 @@ app.get('/events_questions', function(req, res){
 
 
 // db.close();
-server.listen(port, () => {
-  console.log("Server is listening at port: ", port);
-});
-
+server.listen(process.env.PORT || 3100)
