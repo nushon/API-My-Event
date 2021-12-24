@@ -52,7 +52,7 @@ app.post('/participant', function(req, res){
   let bodydata = req.body;
   console.log(bodydata);
 
-  let query = `INSERT INTO participant(name,address,phone_number,email,dob,status,img) VALUES(?,?,?,?,?,?,?) RETURNING *`
+  let query = `INSERT INTO participant(name,address,phone_number,email,dob,status,img) VALUES(?,?,?,?,?,?,?)`
   db.run(query, [bodydata["name"], bodydata["address"], bodydata["phone_number"], bodydata["email"], bodydata["dob"], bodydata["status"], bodydata["img"]],
   (err)=>{
     if(err){
@@ -60,7 +60,7 @@ app.post('/participant', function(req, res){
       res.send("Unsuccessful");
     }else{
       console.log("Your table was inserted successfully");
-      res.send("Your table was inserted successfully");
+      res.send("Your table was inserted successfully", query);
     }  
   });
 
