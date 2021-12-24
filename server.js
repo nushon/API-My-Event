@@ -143,7 +143,7 @@ app.post('/events_questions', function(req, res){
 
 // Get routes
 app.get('/', function(req, res){
-    res.send("Landing Page");
+    res.send("Welcome to My Event API. Use /host to get all hosts. Use /participant to get all participants. Use /hostform to get all hostforms. Use /speakers to get all spaeakers. Use /events_questions to get all events_questions.");
 })
 
 app.get('/host', function(req, res){
