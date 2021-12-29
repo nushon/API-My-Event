@@ -16,21 +16,28 @@ function createTable() {
   db.run(
     "CREATE TABLE IF NOT EXISTS host(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE, address TEXT NOT NULL, phone_number INT NOT NULL UNIQUE, organization_name TEXT, email TEXT NOT NULL UNIQUE, img url)"
   );
+
+  db.run(
+    "CREATE TABLE IF NOT EXISTS speakers(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE, bio TEXT NOT NULL,img url, status TEXT NOT NULL)"
+  );
+
+  db.run(
+    "CREATE TABLE IF NOT EXISTS event_questions(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE, dob DATE, address TEXT NOT NULL, email TEXT NOT NULL UNIQUE, phone_number INT NOT NULL UNIQUE,sex TEXT NOT NULL,education_satus TEXT,status TEXT,about_you TEXT,why_apply TEXT,why_accept TEXT, event_form_id INTEGER)"
+  );
+
+  db.run(
+    "CREATE TABLE IF NOT EXISTS event_form(id INTEGER PRIMARY KEY AUTOINCREMENT, event_name TEXT NOT NULL, event_location TEXT NOT NULL,start_date date ,end_date date , event_description TEXT NOT NULL, questionnaires BLOB NOT NULL UNIQUE, host_id INTEGER, speakers_id BLOB NOT NULL)"
+  );
+
   db.run(
     "CREATE TABLE IF NOT EXISTS participant(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE, address TEXT NOT NULL, phone_number INT NOT NULL UNIQUE, email TEXT NOT NULL UNIQUE,dob date NOT NULL,status TEXT NOT NULL,img url)"
   );
   db.run(
     "CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT, FOREIGN KEY (id) REFERENCES host (id), FOREIGN KEY (id) REFERENCES participant (id))"
   );
-  db.run(
-    "CREATE TABLE IF NOT EXISTS hostform(id INTEGER PRIMARY KEY AUTOINCREMENT, event_name TEXT NOT NULL, event_location TEXT NOT NULL,start_date date ,end_date date , event_description TEXT NOT NULL, questionnaires BLOB NOT NULL UNIQUE, FOREIGN KEY (id) REFERENCES host (id), FOREIGN KEY (id) REFERENCES speakers (id))"
-  );
-  db.run(
-    "CREATE TABLE IF NOT EXISTS speakers(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE, bio TEXT NOT NULL,img url, status TEXT NOT NULL)"
-  );
-  db.run(
-    "CREATE TABLE IF NOT EXISTS events_questions(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE, dob DATE, address TEXT NOT NULL, email TEXT NOT NULL UNIQUE, phone_number INT NOT NULL UNIQUE,sex TEXT NOT NULL,education_satus TEXT,status TEXT,about_you TEXT,why_apply TEXT,why_accept TEXT, FOREIGN KEY (id) REFERENCES hostform (id))"
-  );
+ 
+  
+ 
 
   // db.close();
 }
@@ -65,7 +72,85 @@ app.post("/host", function (req, res) {
     }
   );
 });
+app.post("/speakers", function (req, res) {
+  let bodydata = req.body;
+  console.log(bodydata);
 
+  let query = `INSERT INTO speakers(name,bio,img,status) VALUES(?,?,?,?)`;
+  db.run(
+    query,
+    [bodydata["name"], bodydata["bio"], bodydata["img"], bodydata["status"]],
+    (err) => {
+      if (err) {
+        console.log(err);
+        res.send("Unsuccessful");
+      } else {
+        console.log("Your table was inserted successfully");
+        res.send("Your table was inserted successfully");
+      }
+    }
+  );
+});
+app.post("/events_questions", function (req, res) {
+  let bodydata = req.body;
+  console.log(bodydata);
+
+  let query = `INSERT INTO event_questions(name,dob,address,email,phone_number,sex,education_satus,status,about_you,why_apply,why_accept, event_form_id) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)`;
+  db.run(
+    query,
+    [
+      bodydata["name"],
+      bodydata["dob"],
+      bodydata["address"],
+      bodydata["email"],
+      bodydata["phone_number"],
+      bodydata["sex"],
+      bodydata["education_satus"],
+      bodydata["status"],
+      bodydata["about_you"],
+      bodydata["why_apply"],
+      bodydata["why_accept"],
+      bodydata["event_form_id"]
+    ],
+    (err) => {
+      if (err) {
+        console.log(err);
+        res.send("Unsuccessful");
+      } else {
+        console.log("Your table was inserted successfully");
+        res.send("Your table was inserted successfully");
+      }
+    }
+  );
+});
+app.post("/event_form", function (req, res) {
+  let bodydata = req.body;
+  console.log(bodydata);
+
+  let query = `INSERT INTO event_form(event_name, event_location,start_date,end_date,event_description, questionnaires, host_id, speakers_id) VALUES(?,?,?,?,?,?,?,?)`;
+  db.run(
+    query,
+    [
+      bodydata["event_name"],
+      bodydata["event_location"],
+      bodydata["start_date"],
+      bodydata["end_date"],
+      bodydata["event_description"],
+      bodydata["questionnaires"],
+      bodydata["host_id"],
+      bodydata["speakers_id"]
+    ],
+    (err) => {
+      if (err) {
+        console.log(err);
+        res.send("Unsuccessful");
+      } else {
+        console.log("Your table was inserted successfully");
+        res.send("Your table was inserted successfully");
+      }
+    }
+  );
+});
 app.post("/participant", function (req, res) {
   let bodydata = req.body;
   console.log(bodydata);
@@ -115,84 +200,11 @@ app.post("/participant", function (req, res) {
 //   });
 // });
 
-app.post("/hostform", function (req, res) {
-  let bodydata = req.body;
-  console.log(bodydata);
 
-  let query = `INSERT INTO hostform(event_name, event_location,start_date,end_date,event_description, questionnaires) VALUES(?,?,?,?,?,?)`;
-  db.run(
-    query,
-    [
-      bodydata["event_name"],
-      bodydata["event_location"],
-      bodydata["start_date"],
-      bodydata["end_date"],
-      bodydata["event_description"],
-      bodydata["questionnaires"],
-    ],
-    (err) => {
-      if (err) {
-        console.log(err);
-        res.send("Unsuccessful");
-      } else {
-        console.log("Your table was inserted successfully");
-        res.send("Your table was inserted successfully");
-      }
-    }
-  );
-});
 
-app.post("/speakers", function (req, res) {
-  let bodydata = req.body;
-  console.log(bodydata);
 
-  let query = `INSERT INTO speakers(name,bio,img,status) VALUES(?,?,?,?)`;
-  db.run(
-    query,
-    [bodydata["name"], bodydata["bio"], bodydata["img"], bodydata["status"]],
-    (err) => {
-      if (err) {
-        console.log(err);
-        res.send("Unsuccessful");
-      } else {
-        console.log("Your table was inserted successfully");
-        res.send("Your table was inserted successfully");
-      }
-    }
-  );
-});
 
-app.post("/events_questions", function (req, res) {
-  let bodydata = req.body;
-  console.log(bodydata);
 
-  let query = `INSERT INTO events_questions(name,dob,address,email,phone_number,sex,education_satus,status,about_you,why_apply,why_accept) VALUES(?,?,?,?,?,?,?,?,?,?,?)`;
-  db.run(
-    query,
-    [
-      bodydata["name"],
-      bodydata["dob"],
-      bodydata["address"],
-      bodydata["email"],
-      bodydata["phone_number"],
-      bodydata["sex"],
-      bodydata["education_satus"],
-      bodydata["status"],
-      bodydata["about_you"],
-      bodydata["why_apply"],
-      bodydata["why_accept"],
-    ],
-    (err) => {
-      if (err) {
-        console.log(err);
-        res.send("Unsuccessful");
-      } else {
-        console.log("Your table was inserted successfully");
-        res.send("Your table was inserted successfully");
-      }
-    }
-  );
-});
 
 // Get routes
 app.get("/", function (req, res) {
@@ -234,8 +246,8 @@ app.get("/users", function (req, res) {
   });
 });
 
-app.get("/hostform", function (req, res) {
-  let query = `SELECT * FROM hostform`;
+app.get("/event_form", function (req, res) {
+  let query = `SELECT * FROM event_form`;
   db.all(query, [], (err, rows) => {
     if (err) {
       throw err;
@@ -256,8 +268,8 @@ app.get("/speakers", function (req, res) {
   });
 });
 
-app.get("/events_questions", function (req, res) {
-  let query = `SELECT * FROM events_questions`;
+app.get("/event_questions", function (req, res) {
+  let query = `SELECT * FROM event_questions`;
   db.all(query, [], (err, rows) => {
     if (err) {
       throw err;
@@ -269,3 +281,4 @@ app.get("/events_questions", function (req, res) {
 
 // db.close();
 server.listen(process.env.PORT || 3100);
+console.log("Server is listening at port: 3100");
