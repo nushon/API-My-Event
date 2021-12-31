@@ -26,7 +26,7 @@ function createTable() {
   );
 
   db.run(
-    "CREATE TABLE IF NOT EXISTS event_form(id INTEGER PRIMARY KEY AUTOINCREMENT, event_name TEXT NOT NULL, event_location TEXT NOT NULL,start_date date ,end_date date , event_description TEXT NOT NULL, questionnaires BLOB NOT NULL UNIQUE, host_id INTEGER, speakers_id BLOB NOT NULL)"
+    "CREATE TABLE IF NOT EXISTS event_form(id INTEGER PRIMARY KEY AUTOINCREMENT, event_name TEXT NOT NULL, event_location TEXT NOT NULL,start_date date ,end_date date , event_description TEXT NOT NULL, questionnaires BLOB NOT NULL UNIQUE, speakers_id INTEGER, FOREIGN KEY(speakers_id)REFERENCES speakers (speakers_id))"
   );
 
   db.run(
@@ -115,7 +115,7 @@ app.post("/events_questions", function (req, res) {
     (err) => {
       if (err) {
         console.log(err);
-        res.send("Unsuccessful");
+        res.send("Unsuccessful", err);
       } else {
         console.log("Your table was inserted successfully");
         res.send("Your table was inserted successfully");
@@ -127,7 +127,7 @@ app.post("/event_form", function (req, res) {
   let bodydata = req.body;
   console.log(bodydata);
 
-  let query = `INSERT INTO event_form(event_name, event_location,start_date,end_date,event_description, questionnaires, host_id, speakers_id) VALUES(?,?,?,?,?,?,?,?)`;
+  let query = `INSERT INTO event_form(event_name, event_location,start_date,end_date,event_description, questionnaires, speakers_id) VALUES(?,?,?,?,?,?,?)`;
   db.run(
     query,
     [
@@ -137,13 +137,12 @@ app.post("/event_form", function (req, res) {
       bodydata["end_date"],
       bodydata["event_description"],
       bodydata["questionnaires"],
-      bodydata["host_id"],
       bodydata["speakers_id"]
     ],
     (err) => {
       if (err) {
         console.log(err);
-        res.send("Unsuccessful");
+        res.send("Unsuccessful:", err);
       } else {
         console.log("Your table was inserted successfully");
         res.send("Your table was inserted successfully");
@@ -170,7 +169,7 @@ app.post("/participant", function (req, res) {
     (err) => {
       if (err) {
         console.log(err);
-        res.send("Unsuccessful");
+        res.send("Unsuccessful", err);
       } else {
         console.log("Your table was inserted successfully");
         res.send("Your table was inserted successfully");
