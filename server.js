@@ -5,7 +5,7 @@ let path = require("path");
 let bodyParser = require("body-parser");
 let app = express();
 let server = http.createServer(app);
-let port = 3100;
+// let port = 3000;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -279,5 +279,5 @@ app.get("/event_questions", function (req, res) {
 });
 
 // db.close();
-server.listen(process.env.PORT || 3100);
-console.log("Server is listening at port: 3100");
+server.listen(process.env.PORT || 3000);
+console.log("Server is listening at port: 3000");
