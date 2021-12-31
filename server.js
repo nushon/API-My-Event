@@ -5,7 +5,10 @@ let path = require("path");
 let bodyParser = require("body-parser");
 let app = express();
 let server = http.createServer(app);
-// let port = 3000;
+require('dotenv').config()
+let port = process.env.PORT || 3100;
+
+console.log({port})
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -279,5 +282,5 @@ app.get("/event_questions", function (req, res) {
 });
 
 // db.close();
-server.listen(process.env.PORT || 3000);
-console.log("Server is listening at port: 3000");
+server.listen(port);
+console.log("Server is listening at port: ", port);
