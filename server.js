@@ -145,7 +145,7 @@ app.post("/event_form", function (req, res) {
     (err) => {
       if (err) {
         console.log(err);
-        res.send("Unsuccessful:", err);
+        res.status("Unsuccessful:", err);
       } else {
         console.log("Your table was inserted successfully");
         res.send("Your table was inserted successfully");
