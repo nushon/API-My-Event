@@ -29,7 +29,7 @@ function createTable() {
   );
 
   db.run(
-    "CREATE TABLE IF NOT EXISTS event_form(id INTEGER PRIMARY KEY AUTOINCREMENT, event_name TEXT NOT NULL, event_location TEXT NOT NULL,start_date date ,end_date date , event_description TEXT NOT NULL, questionnaires BLOB NOT NULL UNIQUE, speakers_id INTEGER, FOREIGN KEY(speakers_id)REFERENCES speakers (speakers_id))"
+    "CREATE TABLE IF NOT EXISTS event_form(id INTEGER PRIMARY KEY AUTOINCREMENT, event_name TEXT NOT NULL, event_location TEXT NOT NULL, start_date date,end_date date, event_description TEXT NOT NULL, questionnaires BLOB NOT NULL, speakers_id BLOB)"
   );
 
   db.run(
@@ -249,6 +249,7 @@ app.get("/users", function (req, res) {
 });
 
 app.get("/event_form", function (req, res) {
+  
   let query = `SELECT * FROM event_form`;
   db.all(query, [], (err, rows) => {
     if (err) {
@@ -259,28 +260,106 @@ app.get("/event_form", function (req, res) {
   });
 });
 
-app.get("/speakers", function (req, res) {
-  let query = `SELECT * FROM speakers`;
-  db.all(query, [], (err, rows) => {
+// app.get("/speakers", function (req, res) {
+//   let query = `SELECT * FROM speakers`;
+//   db.all(query, [], (err, rows) => {
+//     if (err) {
+//       throw err;
+//     }
+//     console.log({ rows });
+//     res.send({ rows });
+//   });
+// });
+
+// const getDBTableInfo = async (query) => {
+//   const promise = db.get(query, [], (err, data) => {
+//     if (err) {
+//       throw err;
+//     }
+
+//     console.log({data})
+//     return data
+//   }) 
+//   return await Promise.all([promise])
+// }
+
+// app.get("/eventSpeakers/:id",  async (req, res) => {
+//   const event_id = req.params.id;
+//   let query = `SELECT * FROM event_form WHERE id = ${event_id}`;
+//   db.get(query, [], async (err, row) => {
+//     if (err) {
+//       throw err;
+//     }
+//     const event = row;
+//     event.speakers = [];
+//     const speakerIds = event.speakers_id.split(',');
+
+//     for (let index = 0; index < speakerIds.length; index++) {
+//       const element = speakerIds[index];
+
+//      const result = await getDBTableInfo(`SELECT * FROM speakers WHERE id = ${element}`);
+
+//      console.log({result});
+
+//       // event.speakers.push()
+
+//       // db.get(`SELECT * FROM speakers WHERE id = ${element}`, [], (err, speaker) => {
+//       //   if (err) {
+//       //     throw err;
+//       //   }
+
+//       //   event.speakers.push(speaker)
+
+//       //   console.log({speaker},  event.speakers)
+        
+//       // })
+      
+//     }
+
+    
+//       res.send({ event });
+    
+
+//     console.log({ event, speakerIds });
+//   });
+// });
+// app.get("/event_questions", function (req, res) {
+//   let query = `SELECT * FROM event_questions`;
+//   db.all(query, [], (err, rows) => {
+//     if (err) {
+//       throw err;
+//     }
+//     console.log({ rows });
+//     res.send({ rows });
+//   });
+// });
+
+// app.get("/event_questionnaires", function (req, res) {
+//   let query = `SELECT questionnaires FROM event_form WHERE id = ?`;
+//   db.all(query, [], (err, rows) => {
+//     if (err) {
+//       throw err;
+//     }
+//     console.log({ rows });
+//     res.send({ rows });
+//   });
+// });
+
+app.get("/event/:id", function (req, res) {
+  let eventId = req.params.id;
+  console.log("eventId",eventId);
+  let query = `SELECT * FROM event_form WHERE id=${eventId}`;
+  // let query = `SELECT * FROM event_form ef INNER JOIN speakers s on ef.speakers_id = s.id WHERE id=$ = s.id `;
+  console.log({query})
+  db.get(query, (err, row) => {
     if (err) {
-      throw err;
+      console.log(err);
+      // throw err;
     }
-    console.log({ rows });
-    res.send({ rows });
+    console.log({ row });
+    res.send({ event: row });
   });
 });
-
-app.get("/event_questions", function (req, res) {
-  let query = `SELECT * FROM event_questions`;
-  db.all(query, [], (err, rows) => {
-    if (err) {
-      throw err;
-    }
-    console.log({ rows });
-    res.send({ rows });
-  });
-});
-
 // db.close();
 server.listen(port);
 console.log("Server is listening at port: ", port);
