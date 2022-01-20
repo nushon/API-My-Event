@@ -21,11 +21,11 @@ function createTable() {
   );
 
   db.run(
-    "CREATE TABLE IF NOT EXISTS speakers(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE, bio TEXT NOT NULL,img url, status TEXT NOT NULL)"
+    "CREATE TABLE IF NOT EXISTS speakers(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, bio TEXT,img url, status TEXT)"
   );
 
   db.run(
-    "CREATE TABLE IF NOT EXISTS event_questions(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE, dob DATE, address TEXT NOT NULL, email TEXT NOT NULL UNIQUE, phone_number INT NOT NULL UNIQUE,sex TEXT NOT NULL,education_satus TEXT,status TEXT,about_you TEXT,why_apply TEXT,why_accept TEXT, event_form_id INTEGER)"
+    "CREATE TABLE IF NOT EXISTS event_questions(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, dob DATE, address TEXT, email TEXT, phone_number INT,sex TEXT,education_satus TEXT,status TEXT,about_you TEXT,why_apply TEXT,why_accept TEXT, event_form_id INT)"
   );
 
   db.run(
